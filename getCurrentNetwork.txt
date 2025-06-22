@@ -1,0 +1,10 @@
+function Get-CurrentNetwork {
+
+$pro = netsh wlan show interface | Select-String -Pattern ' SSID '; $pro = [string]$pro;$pos = $pro.IndexOf(':');$pro = $pro.Substring($pos+2).Trim()
+
+$pass = netsh wlan show profile $pro key=clear | Select-String -Pattern 'Key Content'; $pass = [string]$pass;$passPOS = $pass.IndexOf(':');$pass = $pass.Substring($passPOS+2).Trim()
+
+return "$pro - $pass"
+
+}
+Get-CurrentNetwork > $Env:USERPROFILE\Desktop\network.txt
